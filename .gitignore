@@ -1,0 +1,27 @@
+# IDEs and personal settings
+.vscode/
+.idea/
+.idea_modules/
+
+# Environment files
+.env
+
+# Python cache/object files
+__pycache__/
+*.py[cod]
+
+# Egg files
+*.egg-info/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Test and linters cache files and configuration
+.tox/
+.cache/
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+
+# Sphinx documentation files
+docs/_build/
