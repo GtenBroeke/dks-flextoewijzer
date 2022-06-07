@@ -23,9 +23,20 @@
 ## Introduction / Project background
 
 ___
-> What, why, how?
-> What does the algorithm/model do, how this process came to live and who has worked on the project.
-> Also explain why this project exists in the first place.
+The flextoewijzer project consists of two algorithms, both of which are related but can be run independently and have different aims. 
+Both parts are ultimately aimed at the efficient use of flex rides to solve 'afvoertekorten'. Afvoertekorten refer to rollcages with 
+sorted parcels, for which the planned inter transports are not sufficient. A number of flex rides are available to ensure that these
+afvoertekorten are solved. Efficient use of these flex rides would enable a tighter planning of inter transports, leading to savings on
+inter transport. 
+
+The first algorithm is aimed at seeing in advance where afvoertekorten will occur later during the evening. Based on this information,
+the algorithm suggests orders for flex rides. Having these orders earlier would allow the responsible operator in Control Room to send 
+a flex ride to those locations in advance, thus leading to a more efficient use of flex rides. This is accomplished by combining 
+predictions from the 'afvoerbehoeftevoorspeller' for the number of produced rollcages, data from VAR/Simacan on planned inter transports,
+and data produced by MCP showing how many rollcages are currently present at each depot for each destination. 
+
+Development of both algorithms was done by Guus ten Broeke (Ketenplanning, SCDS), Sem van Es (MCP), and Bram Pijnappel (Ketenplanning). 
+The python code was written by Guus ten Broeke. 
 
 ## Installation instructions
 
@@ -83,9 +94,21 @@ ___
 ## Quick start
 
 ___
-> Where to start with the project?
-> What is / what are the entrypoint(s) for the script?
-> Maybe include an example of how to use the code.
+After industrialization, the code should run automatically at several set times each day, and be updated every 15 
+min. during the process. Currently, data has been collected to run both algorithms for a historical day. To run the 
+code for this day, the user should first run the file 'afvoer_baseline.py'. This generates a baseline prediction of 
+where afvoertekorten will occur and at what time. 
+
+The above baseline prediction is updated by running 'generate_orders.py'. By default, it is assumed that this 
+update occurs at 2am, but this time can be modified in 'config.py'. In the final version this update should be run
+automatically every 15 minutes. Performing the update generates a modified prediction of the produced rollcages, 
+and a list of suggested flex orders. 
+
+Note that the above update should have as input the current number of rollcages on the depot floor for each 
+destination. This data source was not yet available during the development of the algorithm. Durin industrialization
+the algorithm should be connected to the data source. To verify the logic of our algorithm in absence of the required 
+data we currently apply a random deviation to the predicted number of rollcages. This deviation should be replaced by
+the real data during industialisation. 
 
 ## Commands
 
