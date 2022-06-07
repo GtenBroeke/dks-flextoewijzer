@@ -128,58 +128,66 @@ If the additional requirements for development, tests and creating documentation
 ## Info on the code
 
 ___
-> In the readme we expect a description of the code. The following information shall be present:
-> - Steps
-> - Filtering
-> - Input (data)
-> - Runtime
-> - Output
->
-> Also include some higher-level information, such as why a random forest is chosen, why 10% is used as training data,
-> etc.
-
 ### Steps
 
-> Overview of ‘steps’, such as data cleaning, feature engineering, model training, etc. Also mention which
-> script/function corresponds with which step.
+1. 	To filter and clean the data, run the script 'prepare_data.py'. Note that currently the script runs using historical data
+	that was collected in advance. 
+2.	Run the script 'afvoer_baseline.py' to obtain a baseline prediction of the number of produced rollcages per depot per 
+	destination for every 15 min. time interval. 
+3.	Run the script 'generate_orders.py', to get an update of the above predictions and a list of suggested flex orders. 
+
+4. 	Run the script 'flextoewijzer.py' to get a suggested assignment of flex rides to flex orders. This step can be run
+	independently from the previous three steps. 
+
 
 ### Filtering
 
-> Which filters are applied, and why?
-> For example, why filter sundays from the training data?
-> Why filter companies that don't have a KVK-number?
+The data is filtered by time to include only data from the current process day. Transport data is filtered to include only inter
+transports, because other types of transport are irrelevant for afvoertekorten. 
 
 ### Input (data)
-
-> What is the input to the model/algorithm?
 
 The model for predicting 'afvoertekorten' requires the output data from the 'afvoervoorspeller', which should be run in advance
 of the process day. This data is used by the model to compute a 'baseline' for the expected afvoer. 
 
 The model uses transport data from VAR to determine planned inter transport. This data should be obtained in advance of the process
-day to be combined with the data from the 'afvoerlijnvoorspeller'. During the process day the VAR data needs to be accessed as well, 
-to get the latest status of planned inter tranports. 
+day to be combined with the data from the 'afvoerlijnvoorspeller'. During the process day the transport data needs to be updated to 
+take into account the latest planning and planned arrival times. These times should come from Simacan ETA data. In the present version of 
+the algorithm, connection to this data source has not yet been realised. This should be done during industrialization.  
 
 The model will need MCP data to get updates regarding how many RC are present at the depot for different directions at the current time. 
+In the present version of the algorithm, connection to this data source has not yet been realised. This should be done during industrialization.  
 
-> Is there manual input required?
 No manual input is required. 
 
-> If a more detailed description of e.g. data types is required, please write a separate readme file.
 
 ### Runtime
 
-> How long does each part of the script take?
-> Mention all relevant times, both very short and very long time periods.
-> For example training, which may take hours, versus an API call, which should take a fraction of a second.
+When run locally for a single process day, I obtain the following run times. 
+prepare_data.py		~3 seconds
+afvoer_baseline.py	~3 seconds
+generate_orders.py	~9 seconds
+
+However, the runtime for the data preparation will not be very representative for the runtime of the final industrialised version, which should 
+be connected to the real data sources. 
 
 ### Output
 
-> What does the project/model output? Where does the output get stored, how is it shared with the users?
+Output examples are available on the confluence page: https://postnl.atlassian.net/wiki/spaces/MCP/pages/3289251884/Afvoertekortenvoorspeller+en+Flextoewijzer 
+
+Output is written to an S3 bucket: https://s3.console.aws.amazon.com/s3/buckets/postnl-datalake-dks?prefix=scds/dks-flextoewijzer/&region=eu-west-1
 
 ## Parameter settings
 
 ___
+Model parameter settings are specified in the file 'config.py'. The parameters are:
+
+truck_capacity:		Capacity of a single truck in terms of rollcages. Should be kept at 48
+start_time		Start time of the process (used for data filtering)
+end_time		End time of the process (used for data filtering)
+rc_threshold		Threshold for current stock above which a flex order can be generated (#RC), default at 48
+rc_threshold_future	Threshold for future stock above which a flex order can be generated (#RC), default at 48
+
 > Some models require certain parameter settings, such as the number of trees in random forest.
 > Explain what parameters you expect to require changes.
 >1) always (each retraining),
@@ -191,23 +199,29 @@ ___
 ## Assumptions
 
 ___
-> What assumptions were made for this project?
-> Explain the assumptions that were made during development of the algorithm and why they were made.
+It is assumed that accurate assessments of the current number of rollcages on the depot floor for each destination 
+are available. 
+
+The algorithm also uses predictions from the 'afvoerbehoeftevoorspeller' to predict the expected number of rollcages for 
+the coming hours. It is thus assumed that these predictions are sufficiently accurate to act upon. Further testing
+will be required to test whether this is the case. This first requires the algorithm to be connected to the real data 
+sources. Once this connection has been made the accuracy of the algorithm can be tested. 
+
+Furthermore, it is assumed that any realizations so far during the process do not affect the predictions of produced
+rollcages for the remainder of the process day. This assumption can be avoided by connecting the algorithm to the 
+'aanvoerlijnvoorspeller' to obtain a better estimate of the rollcages that are expected to be produced. This is suggested
+as a future extension. 
 
 ## Contact information
 
 ___
-> If the user of the code does need help, where can he/she get it? Who is the maintainer of the code, who is accountable
-> for the project? Include name, department and e-mail address.
-
 - Team members:
-    - <firstname lastname (e.mail@address), department\>
-    - <firstname lastname (e.mail@address), department\>
-- Business contact persons:
-    - <firstname lastname (e.mail@address), department\>
-    - <firstname lastname (e.mail@address), department\>
+    - <Guus ten Broeke (guus.tenbroeke@postnl.nl), ketenplanning, SCDS\>
+    - <Sem van Es (sem.vanes@postnl.nl), MCP\>
+    - <Bram Pijnappel (bram.pijnappel@postnl.nl), ketenplanning\>
 
-## Repository structure 57275 - 32747 = 24528 
+
+## Repository structure
 
 ___
 
