@@ -188,13 +188,12 @@ end_time		End time of the process (used for data filtering)
 rc_threshold		Threshold for current stock above which a flex order can be generated (#RC), default at 48
 rc_threshold_future	Threshold for future stock above which a flex order can be generated (#RC), default at 48
 
-> Some models require certain parameter settings, such as the number of trees in random forest.
-> Explain what parameters you expect to require changes.
->1) always (each retraining),
->2) regularly (~monthly),
->3) sporadically (~yearly).
->
->Also explain the (desired and undesired) effects of parameter tuning and the reason behind the current settings.
+The parameters rc_threshold and rc_threshold_future can be changed to tweak the performance of the model. Larger values
+mean that the stock is allowed to grow larger before a flex order is made. Smaller values indicate that a flex order is 
+made earlier. The rc_threshold parameter is compared against the current stock on the depot floor. The rc_threshold_future
+parameter is compared against the future expected stock for the rest of the process, taking into account planned inter 
+transport and predicted number of rollcages. 
+
 
 ## Assumptions
 
