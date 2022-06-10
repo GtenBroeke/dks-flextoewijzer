@@ -23,17 +23,18 @@ PATH_STORAGE = 's3://postnl-datalake-dks/scds/dks-flextoewijzer'
 PATH_INPUT = f'{PATH_STORAGE}/input'
 PATH_ADDRESSES = f'{PATH_INPUT}/adressen_lijst.csv'
 PATH_DEPARTURE_TIMES = f'{PATH_INPUT}/final_departure_times.csv'
-PATH_DEPOT_DATA = f'{PATH_INPUT}/PostNL_depots.xlsx'
+PATH_DEPOT_DATA = f'{PATH_INPUT}/DepotData.xlsx'
 PATH_AFVOER = f'{PATH_INPUT}/31_01_2022/afvoerbehoefte_voorspeller_scenario_20220131_scans.csv'
 PATH_SCANS = f'{PATH_INPUT}/31_01_2022/afvoerbehoefte_voorspeller_scenario_20220131_scans.csv'
 PATH_TRANSPORT = f'{PATH_INPUT}/31_01_2022/VAR-20210131.csv'
+PATH_TRANSPORT_SIM = f'{PATH_INPUT}/simacan_example.xlsx'
 PATH_REGISTRATIE = f'{PATH_INPUT}/31_01_2022/31-01-2022 Registratie_mod.xlsx'
 
 # Interim files
 PATH_INTERIM = f'{PATH_STORAGE}/interim'
 PATH_AFVOER_BASELINE = f'{PATH_INTERIM}/afvoer_baseline.xlsx'
 PATH_TRANSPORT_CLEANED = f'{PATH_INTERIM}/VAR.csv'
-
+PATH_TRANSPORT_SIM_CLEANED = f'{PATH_INTERIM}/SIM.csv'
 # Output files
 PATH_OUTPUT = f'{PATH_STORAGE}/output'
 PATH_AFVOER_ORDERS = f'{PATH_OUTPUT}/afvoer_orders.xlsx'
@@ -52,6 +53,6 @@ truck_capacity = 48
 w1 = 1
 process_day = datetime.date(2022, 1, 31)
 
-start_time = datetime.datetime(year=2022, month=1, day=31, hour=8)
-end_time = datetime.datetime(year=2022, month=2, day=1, hour=7)
+start_time = datetime.datetime(year=2021, month=3, day=8, hour=8)
+end_time = datetime.datetime(year=2021, month=3, day=9, hour=7)
 current_time = datetime.datetime(year=2022, month=2, day=1, hour=2)

@@ -316,6 +316,18 @@ def read_cleaned_VAR_data(path_transport):
     df['loading_time'] = df['loading_time'].apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
     return df
 
+def read_cleaned_SIM_data(path_transport):
+    """
+    Read transport data from Simacan that was already cleaned to filter the relevant rides and columns
+    Args:
+        path_transport: path for reading the data
+
+    Returns: dataframe containing the transport data
+
+    """
+    df = pd.read_csv(path_transport, sep=',')
+    df['loading_time'] = df['loading_time'].apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+    return df
 
 def generate_stock_prediction(df_afvoer, df_inter):
     """

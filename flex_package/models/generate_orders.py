@@ -14,7 +14,7 @@ def main():
     xls = pd.ExcelFile(config.PATH_AFVOER_BASELINE)
 
     # Read transport data
-    inter_transports = mf.read_cleaned_VAR_data(config.PATH_TRANSPORT_CLEANED)
+    inter_transports = mf.read_cleaned_SIM_data(config.PATH_TRANSPORT_CLEANED)
 
     afvoer_dict = dict()  # Dictionary will contain predicted afvoer and predictions of RC on floor for each depot
     for name in xls.sheet_names[2:]:     # Loop over all combinations of depot and destination
@@ -55,4 +55,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
